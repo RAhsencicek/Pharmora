@@ -1,12 +1,51 @@
-# React + Vite
+# Pharmora - Eczane Yönetim Sistemi
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern ve kullanıcı dostu bir eczane yönetim sistemi.
 
-Currently, two official plugins are available:
+## Özellikler
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Koyu tema arayüzü
+- Responsive tasarım
+- Güvenli giriş sistemi
+- Dashboard ekranı
+- İlaç yönetimi
+- Hasta takibi
+- Reçete yönetimi
+- Stok takibi
+- Raporlama sistemi
 
-## Expanding the ESLint configuration
+## Teknolojiler
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React
+- Material-UI
+- Redux Toolkit
+- React Router
+- Framer Motion
+- Vite
+
+## Kurulum
+
+1. Repository'yi klonlayın:
+```bash
+git clone https://github.com/RAhsencicek/Pharmora.git
+```
+
+2. Proje dizinine gidin:
+```bash
+cd Pharmora
+```
+
+3. Bağımlılıkları yükleyin:
+```bash
+npm install
+```
+
+4. Geliştirme sunucusunu başlatın:
+```bash
+npm run dev
+```
+
+## Test Hesabı
+
+- Eczacı ID: 1234
+- Şifre: 1234
