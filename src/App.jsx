@@ -2,10 +2,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LoadingScreen from './components/loading/LoadingScreen';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
+import MedicinesPage from './pages/MedicinesPage';
+import ReportsPage from './pages/ReportsPage';
 import { useState, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { Provider } from 'react-redux';
-import store from './store';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const darkTheme = createTheme({
   palette: {
@@ -26,27 +27,33 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 10000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
 
   if (loading) {
-    return <LoadingScreen />;
+    return (
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <LoadingScreen />
+      </ThemeProvider>
+    );
   }
 
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={darkTheme}>
-        <Router>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/" element={<Navigate to="/login" replace />} />
-          </Routes>
-        </Router>
-      </ThemeProvider>
-    </Provider>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Router>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/medicines" element={<MedicinesPage />} />
+          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 

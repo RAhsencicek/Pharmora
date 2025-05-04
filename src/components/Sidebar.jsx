@@ -1,88 +1,95 @@
 import {
+  Box,
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
-  ListItemButton,
-  Toolbar,
-  Divider,
+  useTheme,
 } from '@mui/material';
 import {
-  Dashboard,
-  LocalPharmacy,
-  People,
-  Assignment,
-  Timeline,
-  Settings,
+  Dashboard as DashboardIcon,
+  LocalPharmacy as MedicineIcon,
+  People as PatientsIcon,
+  Assignment as PrescriptionsIcon,
+  Assessment as ReportsIcon,
+  Settings as SettingsIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const drawerWidth = 240;
-
 const menuItems = [
-  { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
-  { text: 'İlaçlar', icon: <LocalPharmacy />, path: '/medicines' },
-  { text: 'Hastalar', icon: <People />, path: '/patients' },
-  { text: 'Reçeteler', icon: <Assignment />, path: '/prescriptions' },
-  { text: 'Raporlar', icon: <Timeline />, path: '/reports' },
-  { text: 'Ayarlar', icon: <Settings />, path: '/settings' },
+  { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+  { text: 'İlaç Yönetimi', icon: <MedicineIcon />, path: '/medicines' },
+  { text: 'Hasta Yönetimi', icon: <PatientsIcon />, path: '/patients' },
+  { text: 'Reçeteler', icon: <PrescriptionsIcon />, path: '/prescriptions' },
+  { text: 'Raporlar', icon: <ReportsIcon />, path: '/reports' },
+  { text: 'Ayarlar', icon: <SettingsIcon />, path: '/settings' },
 ];
 
-export default function Sidebar({ open, variant = 'permanent' }) {
+const drawerWidth = 240;
+
+export default function Sidebar({ open, variant, onClose }) {
+  const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
-  return (
-    <Drawer
-      variant={variant}
-      open={open}
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-          backgroundColor: 'background.paper',
-          borderRight: '1px solid',
-          borderColor: 'divider',
-        },
-      }}
-    >
-      <Toolbar />
-      <Divider />
+  const handleNavigation = (path) => {
+    navigate(path);
+    if (onClose) onClose();
+  };
+
+  const drawer = (
+    <Box sx={{ mt: 8 }}>
       <List>
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton
+              onClick={() => handleNavigation(item.path)}
               selected={location.pathname === item.path}
-              onClick={() => navigate(item.path)}
               sx={{
                 '&.Mui-selected': {
-                  backgroundColor: 'action.selected',
-                  borderRight: '3px solid',
-                  borderColor: 'primary.main',
+                  backgroundColor: 'rgba(76, 175, 80, 0.1)',
                   '&:hover': {
-                    backgroundColor: 'action.selected',
+                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
                   },
                 },
               }}
             >
-              <ListItemIcon sx={{ color: 'text.primary' }}>
+              <ListItemIcon sx={{ color: location.pathname === item.path ? 'primary.main' : 'inherit' }}>
                 {item.icon}
               </ListItemIcon>
-              <ListItemText 
-                primary={item.text}
-                sx={{
-                  '& .MuiListItemText-primary': {
-                    fontWeight: location.pathname === item.path ? 600 : 400,
-                  },
-                }}
-              />
+              <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-    </Drawer>
+    </Box>
+  );
+
+  return (
+    <Box
+      component="nav"
+      sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+    >
+      <Drawer
+        variant={variant}
+        open={open}
+        onClose={onClose}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        sx={{
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: drawerWidth,
+            borderRight: `1px solid ${theme.palette.divider}`,
+            backgroundColor: theme.palette.background.paper,
+          },
+        }}
+      >
+        {drawer}
+      </Drawer>
+    </Box>
   );
 }

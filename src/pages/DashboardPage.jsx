@@ -8,6 +8,12 @@ import {
   CardContent,
   useTheme,
   useMediaQuery,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@mui/material';
 import {
   LocalPharmacy,
@@ -17,6 +23,8 @@ import {
 } from '@mui/icons-material';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import ActivityChart from '../components/dashboard/ActivityChart';
+import StockChart from '../components/dashboard/StockChart';
 
 const stats = [
   {
@@ -43,6 +51,13 @@ const stats = [
     icon: <TrendingUp sx={{ fontSize: 40 }} />,
     color: '#E91E63',
   },
+];
+
+const recentPrescriptions = [
+  { id: '1234', patient: 'Ahmet Yılmaz', medicine: 'Augmentin 1000mg', date: '04.05.2025' },
+  { id: '1235', patient: 'Ayşe Demir', medicine: 'Parol 500mg', date: '04.05.2025' },
+  { id: '1236', patient: 'Mehmet Kaya', medicine: 'Cipro 500mg', date: '04.05.2025' },
+  { id: '1237', patient: 'Fatma Şahin', medicine: 'Voltaren 75mg', date: '04.05.2025' },
 ];
 
 export default function DashboardPage() {
@@ -113,23 +128,15 @@ export default function DashboardPage() {
 
         <Grid container spacing={3} sx={{ mt: 2 }}>
           <Grid item xs={12} md={8}>
-            <Paper
-              elevation={0}
-              sx={{
-                p: 3,
-                bgcolor: 'background.paper',
-                border: '1px solid',
-                borderColor: 'divider',
-                height: 400,
-              }}
-            >
-              <Typography variant="h6" gutterBottom>
-                Son Aktiviteler
-              </Typography>
-              {/* Buraya grafik veya tablo eklenebilir */}
-            </Paper>
+            <ActivityChart />
           </Grid>
           <Grid item xs={12} md={4}>
+            <StockChart />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3} sx={{ mt: 2 }}>
+          <Grid item xs={12}>
             <Paper
               elevation={0}
               sx={{
@@ -137,13 +144,33 @@ export default function DashboardPage() {
                 bgcolor: 'background.paper',
                 border: '1px solid',
                 borderColor: 'divider',
-                height: 400,
               }}
             >
               <Typography variant="h6" gutterBottom>
-                Stok Durumu
+                Son Reçeteler
               </Typography>
-              {/* Buraya stok bilgileri eklenebilir */}
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Reçete No</TableCell>
+                      <TableCell>Hasta</TableCell>
+                      <TableCell>İlaç</TableCell>
+                      <TableCell>Tarih</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {recentPrescriptions.map((row) => (
+                      <TableRow key={row.id}>
+                        <TableCell>{row.id}</TableCell>
+                        <TableCell>{row.patient}</TableCell>
+                        <TableCell>{row.medicine}</TableCell>
+                        <TableCell>{row.date}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Paper>
           </Grid>
         </Grid>
