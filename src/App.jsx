@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import MedicinesPage from './pages/MedicinesPage';
 import ReportsPage from './pages/ReportsPage';
+import PrescriptionsPage from './pages/PrescriptionsPage';
 import { useState, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -50,6 +51,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/medicines" element={<MedicinesPage />} />
           <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/prescriptions" element={<PrescriptionsPage />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>
