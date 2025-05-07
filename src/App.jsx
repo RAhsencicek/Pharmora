@@ -6,6 +6,7 @@ import DashboardPage from './pages/DashboardPage';
 import MedicinesPage from './pages/MedicinesPage';
 import ReportsPage from './pages/ReportsPage';
 import PrescriptionsPage from './pages/PrescriptionsPage';
+import DrugDatabasePage from './pages/DrugDatabasePage';
 import { useState, useEffect } from 'react';
 import { ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -75,6 +76,11 @@ function App() {
           <Route path="/prescriptions" element={
             <PrivateRoute>
               <PrescriptionsPage />
+            </PrivateRoute>
+          } />
+          <Route path="/drug-database" element={
+            <PrivateRoute>
+              <DrugDatabasePage />
             </PrivateRoute>
           } />
           

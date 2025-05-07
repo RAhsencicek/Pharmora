@@ -15,6 +15,7 @@ import {
   Assignment as PrescriptionsIcon,
   Assessment as ReportsIcon,
   Settings as SettingsIcon,
+  Search as SearchIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { NAVBAR_HEIGHT } from './Navbar';
@@ -22,6 +23,7 @@ import { NAVBAR_HEIGHT } from './Navbar';
 const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
   { text: 'İlaç Yönetimi', icon: <MedicineIcon />, path: '/medicines' },
+  { text: 'İlaç Veritabanı', icon: <SearchIcon />, path: '/drug-database' },
   { text: 'Hasta Yönetimi', icon: <PatientsIcon />, path: '/patients' },
   { text: 'Reçeteler', icon: <PrescriptionsIcon />, path: '/prescriptions' },
   { text: 'Raporlar', icon: <ReportsIcon />, path: '/reports' },
