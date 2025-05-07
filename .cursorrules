@@ -1,0 +1,11 @@
+React 18.2.0, Vite 5.1.0, Redux Toolkit 2.7.0, React Router 6.30.0 ve Material UI 5.15.10 sürümlerine bağlı kalmalısın.
+Mevcut proje yapısını değiştirmemeli, yeni özellikler eklerken mevcut klasör yapısını takip etmelisin.
+Material UI'ın koyu temasını kullanmalı ve theme.js dosyasındaki renk paletini korumalısın.
+Redux Toolkit slice mimarisine uymalı, yeni özellikleri mevcut durum yönetimi yapısına entegre etmelisin.
+React Router yönlendirme yapısını korumalısın.
+Bileşenler için Material UI'ı kullanmalı ve mevcut stil kılavuzunu takip etmelisin.
+Three.js ve React Three Fiber kullanırken mevcut yapıyı takip etmelisin.
+Leaflet ve React-Leaflet için sürüm uyumluluğuna dikkat etmelisin.
+Performans için memoization ve lazy loading kullanmalısın.
+ESLint kurallarına uymalı, fonksiyonel bileşenleri ve React hooks'u kullanmalısın.
+React Leaflet 5.0.0 ile çalışırken --legacy-peer-deps bayrağını kullanmak gerektiğini unutma.
