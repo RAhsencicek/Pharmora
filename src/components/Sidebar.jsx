@@ -17,6 +17,7 @@ import {
   Settings as SettingsIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { NAVBAR_HEIGHT } from './Navbar';
 
 const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
@@ -40,14 +41,16 @@ export default function Sidebar({ open, variant, onClose }) {
   };
 
   const drawer = (
-    <Box sx={{ mt: 8 }}>
-      <List>
+    <Box>
+      <Box sx={{ height: NAVBAR_HEIGHT }} />
+      <List sx={{ py: 2 }}>
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton
               onClick={() => handleNavigation(item.path)}
               selected={location.pathname === item.path}
               sx={{
+                py: 1.2,
                 '&.Mui-selected': {
                   backgroundColor: 'rgba(76, 175, 80, 0.1)',
                   '&:hover': {
@@ -85,6 +88,7 @@ export default function Sidebar({ open, variant, onClose }) {
             width: drawerWidth,
             borderRight: `1px solid ${theme.palette.divider}`,
             backgroundColor: theme.palette.background.paper,
+            pt: 0,
           },
         }}
       >

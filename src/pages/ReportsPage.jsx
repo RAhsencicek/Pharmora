@@ -29,8 +29,7 @@ import {
 import { ResponsiveLine } from '@nivo/line';
 import { ResponsivePie } from '@nivo/pie';
 import { ResponsiveBar } from '@nivo/bar';
-import Navbar from '../components/Navbar';
-import Sidebar from '../components/Sidebar';
+import Layout from '../components/Layout';
 
 // Örnek veriler
 const salesData = [
@@ -63,14 +62,9 @@ const topSellingMeds = [
 ];
 
 export default function ReportsPage() {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState(0);
   const [timeRange, setTimeRange] = useState('week');
   const theme = useTheme();
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
@@ -308,67 +302,39 @@ export default function ReportsPage() {
   };
 
   return (
-    <Box sx={{ display: 'flex', bgcolor: 'background.default', minHeight: '100vh' }}>
-      <Navbar onMenuClick={handleDrawerToggle} />
-      
-      <Sidebar
-        open={mobileOpen}
-        variant="permanent"
-        onClose={() => setMobileOpen(false)}
-      />
+    <Layout>
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Raporlar ve Analizler
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Eczanenizin performans ve stok analizlerini buradan inceleyebilirsiniz.
+        </Typography>
+      </Box>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${240}px)` },
-          mt: 8,
+      <Paper 
+        elevation={0}
+        sx={{ 
+          mb: 3,
+          border: '1px solid',
+          borderColor: 'divider',
         }}
       >
-        <Typography variant="h4" gutterBottom sx={{ mb: 4 }}>
-          Raporlar
-        </Typography>
-
-        <Paper
-          elevation={0}
-          sx={{
-            mb: 3,
-            bgcolor: 'background.paper',
-            border: '1px solid',
-            borderColor: 'divider',
-          }}
+        <Tabs
+          value={currentTab}
+          onChange={handleTabChange}
+          indicatorColor="primary"
+          textColor="primary"
+          variant="fullWidth"
         >
-          <Tabs
-            value={currentTab}
-            onChange={handleTabChange}
-            variant="fullWidth"
-            sx={{
-              '& .MuiTab-root': {
-                minHeight: 64,
-              },
-            }}
-          >
-            <Tab
-              icon={<TrendingUp />}
-              label="Satış Raporu"
-              iconPosition="start"
-            />
-            <Tab
-              icon={<LocalPharmacy />}
-              label="Stok Raporu"
-              iconPosition="start"
-            />
-            <Tab
-              icon={<People />}
-              label="Hasta Raporu"
-              iconPosition="start"
-            />
-          </Tabs>
-        </Paper>
+          <Tab label="Satış Analizi" icon={<TrendingUp />} iconPosition="start" />
+          <Tab label="Stok Dağılımı" icon={<LocalPharmacy />} iconPosition="start" />
+          <Tab label="Hasta İstatistikleri" icon={<People />} iconPosition="start" />
+          <Tab label="Trend Analizi" icon={<Timeline />} iconPosition="start" />
+        </Tabs>
+      </Paper>
 
-        {renderTabContent()}
-      </Box>
-    </Box>
+      {renderTabContent()}
+    </Layout>
   );
 }

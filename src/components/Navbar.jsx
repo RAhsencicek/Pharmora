@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   AppBar,
   Box,
@@ -18,10 +19,22 @@ import {
   Settings,
   Person,
 } from '@mui/icons-material';
+import { logout } from '../store/slices/authSlice';
+
+// Navbar yüksekliğini dışa aktarıyoruz, böylece diğer bileşenler kullanabilir
+export const NAVBAR_HEIGHT = 64;
 
 export default function Navbar({ onMenuClick }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   const [anchorEl, setAnchorEl] = useState(null);
+
+  // Kullanıcı adının baş harfini alma fonksiyonu
+  const getInitial = () => {
+    if (!user || !user.name) return '?';
+    return user.name.charAt(0).toUpperCase();
+  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,20 +45,35 @@ export default function Navbar({ onMenuClick }) {
   };
 
   const handleLogout = () => {
+    dispatch(logout());
+    handleClose();
     navigate('/login');
+  };
+
+  const handleProfile = () => {
+    handleClose();
+    // İleride profil sayfasına yönlendirme eklenecek
+    // navigate('/profile');
+  };
+
+  const handleSettings = () => {
+    handleClose();
+    // İleride ayarlar sayfasına yönlendirme eklenecek
+    // navigate('/settings');
   };
 
   return (
     <AppBar
       position="fixed"
       sx={{
-        zIndex: (theme) => theme.zIndex.drawer + 1,
+        zIndex: (theme) => theme.zIndex.drawer + 2,
         backgroundColor: 'background.paper',
         borderBottom: '1px solid',
         borderColor: 'divider',
+        height: NAVBAR_HEIGHT,
       }}
     >
-      <Toolbar>
+      <Toolbar sx={{ height: '100%' }}>
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -83,7 +111,7 @@ export default function Navbar({ onMenuClick }) {
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="Profil">
+          <Tooltip title={user?.name ? `${user.name} ${user.surname || ''}` : 'Profil'}>
             <IconButton
               onClick={handleMenu}
               color="inherit"
@@ -95,7 +123,7 @@ export default function Navbar({ onMenuClick }) {
                   bgcolor: 'primary.main',
                 }}
               >
-                E
+                {getInitial()}
               </Avatar>
             </IconButton>
           </Tooltip>
@@ -115,11 +143,23 @@ export default function Navbar({ onMenuClick }) {
           }}
           open={Boolean(anchorEl)}
           onClose={handleClose}
+          PaperProps={{
+            sx: {
+              mt: 1,
+              minWidth: 180,
+              backgroundColor: 'background.paper',
+              borderRadius: 1,
+              boxShadow: 4,
+              '& .MuiMenuItem-root': {
+                py: 1,
+              }
+            }
+          }}
         >
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleProfile}>
             <Person sx={{ mr: 1 }} /> Profil
           </MenuItem>
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleSettings}>
             <Settings sx={{ mr: 1 }} /> Ayarlar
           </MenuItem>
           <MenuItem onClick={handleLogout}>

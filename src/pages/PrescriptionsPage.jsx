@@ -27,6 +27,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  useTheme,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -39,8 +40,7 @@ import {
   Assignment as AssignmentIcon,
   Payment as PaymentIcon,
 } from '@mui/icons-material';
-import Navbar from '../components/Navbar';
-import Sidebar from '../components/Sidebar';
+import Layout from '../components/Layout';
 
 // Örnek veriler
 const samplePatients = [
@@ -97,11 +97,7 @@ export default function PrescriptionsPage() {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedMedicines, setSelectedMedicines] = useState([]);
   const [doctorName, setDoctorName] = useState('');
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const theme = useTheme();
 
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1);
@@ -314,147 +310,133 @@ export default function PrescriptionsPage() {
     }
   };
 
-  return (
-    <Box sx={{ display: 'flex', bgcolor: 'background.default', minHeight: '100vh' }}>
-      <Navbar onMenuClick={handleDrawerToggle} />
-      
-      <Sidebar
-        open={mobileOpen}
-        variant="permanent"
-        onClose={() => setMobileOpen(false)}
-      />
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'DELIVERED':
+        return 'success';
+      case 'PENDING':
+        return 'warning';
+      default:
+        return 'default';
+    }
+  };
 
-      <Box
-        component="main"
+  return (
+    <Layout>
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Reçete Yönetimi
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Eczanenizin reçetelerini buradan yönetebilirsiniz.
+        </Typography>
+      </Box>
+
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleOpenDialog}
+        >
+          Yeni Reçete
+        </Button>
+      </Box>
+
+      <Paper
+        elevation={0}
         sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${240}px)` },
-          mt: 8,
+          width: '100%',
+          overflow: 'hidden',
+          border: '1px solid',
+          borderColor: 'divider',
+          borderRadius: 1,
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-          <Typography variant="h4" gutterBottom>
-            Reçete Yönetimi
-          </Typography>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={handleOpenDialog}
-          >
-            Yeni Reçete
-          </Button>
-        </Box>
-
-        <Paper
-          elevation={0}
-          sx={{
-            p: 3,
-            bgcolor: 'background.paper',
-            border: '1px solid',
-            borderColor: 'divider',
-          }}
-        >
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Reçete No</TableCell>
-                  <TableCell>Hasta</TableCell>
-                  <TableCell>Doktor</TableCell>
-                  <TableCell>Tarih</TableCell>
-                  <TableCell align="right">Tutar</TableCell>
-                  <TableCell>Durum</TableCell>
-                  <TableCell align="right">İşlemler</TableCell>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Reçete ID</TableCell>
+                <TableCell>Hasta</TableCell>
+                <TableCell>Doktor</TableCell>
+                <TableCell>Tarih</TableCell>
+                <TableCell>Tutar</TableCell>
+                <TableCell>Durum</TableCell>
+                <TableCell align="right">İşlemler</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {prescriptions.map((prescription) => (
+                <TableRow key={prescription.id}>
+                  <TableCell>{prescription.id}</TableCell>
+                  <TableCell>{prescription.patientName}</TableCell>
+                  <TableCell>{prescription.doctorName}</TableCell>
+                  <TableCell>{prescription.date}</TableCell>
+                  <TableCell>₺{prescription.totalPrice.toFixed(2)}</TableCell>
+                  <TableCell>
+                    <Chip
+                      icon={getStatusIcon(prescription.status)}
+                      label={prescriptionStatus[prescription.status]}
+                      color={getStatusColor(prescription.status)}
+                      size="small"
+                      variant="filled"
+                    />
+                  </TableCell>
+                  <TableCell align="right">
+                    <IconButton size="small">
+                      <EditIcon fontSize="small" />
+                    </IconButton>
+                    <IconButton size="small">
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {prescriptions.map((prescription) => (
-                  <TableRow key={prescription.id}>
-                    <TableCell>{prescription.id}</TableCell>
-                    <TableCell>{prescription.patientName}</TableCell>
-                    <TableCell>{prescription.doctorName}</TableCell>
-                    <TableCell>{prescription.date}</TableCell>
-                    <TableCell align="right">₺{prescription.totalPrice}</TableCell>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {getStatusIcon(prescription.status)}
-                        <FormControl size="small" sx={{ minWidth: 120 }}>
-                          <Select
-                            value={prescription.status}
-                            onChange={(e) => handleStatusChange(prescription.id, e.target.value)}
-                          >
-                            {Object.entries(prescriptionStatus).map(([key, value]) => (
-                              <MenuItem key={key} value={key}>{value}</MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </Box>
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton size="small">
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton size="small" color="error">
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-
-        <Dialog 
-          open={openDialog} 
-          onClose={handleCloseDialog}
-          maxWidth="md"
-          fullWidth
-        >
-          <DialogTitle>
-            Yeni Reçete Oluştur
-          </DialogTitle>
-          <DialogContent>
-            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
               ))}
-            </Stepper>
-            {getStepContent(activeStep)}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>İptal</Button>
-            {activeStep > 0 && (
-              <Button onClick={handleBack}>
-                Geri
-              </Button>
-            )}
-            {activeStep === steps.length - 1 ? (
-              <Button
-                variant="contained"
-                onClick={handleSubmit}
-                disabled={!selectedPatient || selectedMedicines.length === 0 || !doctorName}
-              >
-                Oluştur
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                onClick={handleNext}
-                disabled={
-                  (activeStep === 0 && (!selectedPatient || !doctorName)) ||
-                  (activeStep === 1 && selectedMedicines.length === 0)
-                }
-              >
-                İleri
-              </Button>
-            )}
-          </DialogActions>
-        </Dialog>
-      </Box>
-    </Box>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+
+      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+        <DialogTitle>Yeni Reçete Ekle</DialogTitle>
+        <DialogContent>
+          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 4 }}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {getStepContent(activeStep)}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>İptal</Button>
+          {activeStep > 0 && (
+            <Button onClick={handleBack}>
+              Geri
+            </Button>
+          )}
+          {activeStep < steps.length - 1 ? (
+            <Button 
+              variant="contained" 
+              onClick={handleNext}
+              disabled={
+                (activeStep === 0 && (!selectedPatient || !doctorName)) ||
+                (activeStep === 1 && selectedMedicines.length === 0)
+              }
+            >
+              İleri
+            </Button>
+          ) : (
+            <Button 
+              variant="contained" 
+              onClick={handleSubmit}
+            >
+              Tamamla
+            </Button>
+          )}
+        </DialogActions>
+      </Dialog>
+    </Layout>
   );
 }
