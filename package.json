@@ -36,12 +36,6 @@
     "react-router-dom": "^6.30.0",
     "three": "^0.161.0"
   },
-  "overrides": {
-    "@react-leaflet/core": {
-      "react": "^18.0.0",
-      "react-dom": "^18.0.0"
-    }
-  },
   "devDependencies": {
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
